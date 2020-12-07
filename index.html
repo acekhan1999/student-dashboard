@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/all.css">
+    <title>Student Dashboard</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Khula:wght@800&display=swap');
+
+    * {
+        font-family: 'Cabin', sans-serif;
+        font-weight: lighter;
+    }
+
+    body {
+        /* padding: 5%; */
+        margin: 0;
+        padding: 0;
+    }
+
+    .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card {
+        /* border: 1px solid black; */
+        width: 20%;
+        padding: 5%;
+        text-align: center;
+        /* margin: 2px; */
+        transition: 0.5s !important;
+    }
+
+    .card h1,
+    .card h2,
+    .card h3,
+    .card i {
+        transition: 0.5s;
+    }
+
+    .card:hover>h1 {
+        font-size: 20px;
+    }
+
+    .card:hover>h2,
+    .card:hover>h3 {
+        font-size: 25px;
+    }
+
+    .card:hover>i {
+        font-size: 75px;
+    }
+
+    .card h1 {
+        font-size: 28px;
+    }
+
+    .card i {
+        font-size: 40px;
+    }
+
+    .card:nth-child(1) {
+        background-color: darkblue;
+        color: white;
+    }
+
+    .card:nth-child(2) {
+        background-color: #c70039;
+        color: white;
+    }
+
+    .card:nth-child(3) {
+        background-color: #FFC30F;
+        color: white;
+    }
+
+    .future-text,
+    .future-text span {
+        font-family: 'Khula', sans-serif;
+        text-transform: uppercase;
+    }
+
+    .video_student {
+        height: 30vh;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        /* display: inline-block; */
+    }
+
+    .video_student video {
+        position: absolute;
+        object-fit: cover;
+        width: 100%;
+        height: 20vh;
+        filter: brightness(50%);
+    }
+
+    .video_student h1 {
+        position: relative;
+        z-index: 1;
+        max-width: 1000px;
+        margin-top: 2.5%;
+        color: white;
+    }
+</style>
+
+<body>
+    <!-- <h1>Student Dashboard</h1> -->
+    <br>
+    <div class="video_student">
+        <video src="student_dashboard_portal.mp4" autoplay loop></video>
+
+        <h1 class="future-text">Your Route To Become A
+            <span class="txt-rotate" data-period="2000"
+                data-rotate='[ "Python Developer.", "Web Designer.", "Web App Developer.", "Game Developer.", "Mobile App Developer.", "Data Scientist.", "Robotics Engineer."]'></span>
+        </h1>
+    </div>
+    <section>
+        <div class="cards">
+            <div class="card">
+                <i class="fas fa-calendar-alt"></i>
+                <h1>Upcoming Session</h1>
+                <h2>Mon, 7 Dec 2020</h2>
+                <h3>6 Sessions Remaining</h3>
+            </div>
+            <div class="card">
+                <i class="fas fa-video"></i>
+                <h1>Session Recordings</h1>
+                <h2>2-Week Validity</h2>
+            </div>
+            <div class="card">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <h1>Zoom Session Link</h1>
+                <h2>1 Hour Session</h2>
+            </div>
+        </div>
+    </section>
+    <script>
+        var TxtRotate = function (el, toRotate, period) {
+            this.toRotate = toRotate;
+            this.el = el;
+            this.loopNum = 0;
+            this.period = parseInt(period, 10) || 2000;
+            this.txt = '';
+            this.tick();
+            this.isDeleting = false;
+        };
+
+        TxtRotate.prototype.tick = function () {
+            var i = this.loopNum % this.toRotate.length;
+            var fullTxt = this.toRotate[i];
+
+            if (this.isDeleting) {
+                this.txt = fullTxt.substring(0, this.txt.length - 1);
+            } else {
+                this.txt = fullTxt.substring(0, this.txt.length + 1);
+            }
+
+            this.el.innerHTML = '<span class="wrap">' + this.txt + '</span>';
+
+            var that = this;
+            var delta = 300 - Math.random() * 100;
+
+            if (this.isDeleting) { delta /= 2; }
+
+            if (!this.isDeleting && this.txt === fullTxt) {
+                delta = this.period;
+                this.isDeleting = true;
+            } else if (this.isDeleting && this.txt === '') {
+                this.isDeleting = false;
+                this.loopNum++;
+                delta = 500;
+            }
+
+            setTimeout(function () {
+                that.tick();
+            }, delta);
+        };
+
+        window.onload = function () {
+            var elements = document.getElementsByClassName('txt-rotate');
+            for (var i = 0; i < elements.length; i++) {
+                var toRotate = elements[i].getAttribute('data-rotate');
+                var period = elements[i].getAttribute('data-period');
+                if (toRotate) {
+                    new TxtRotate(elements[i], JSON.parse(toRotate), period);
+                }
+            }
+            // INJECT CSS
+            var css = document.createElement("style");
+            css.type = "text/css";
+            css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
+            document.body.appendChild(css);
+        };
+    </script>
+</body>
+
+</html>
